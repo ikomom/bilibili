@@ -1,135 +1,187 @@
-# Bilibili图片分享平台
+# Bilibili Demo - 仿B站视频平台
 
-一个基于Vue3的图片分享平台，模仿Bilibili的界面设计，包含前端展示页面和管理后台。
+一个基于 Vue.js 前端和 NestJS 后端的仿B站视频平台演示项目。
 
-## 功能特性
+## 🚀 项目特性
 
-### 前端展示页面
-- 🎨 仿Bilibili界面设计
-- 📱 响应式布局，支持移动端
-- 🔍 搜索功能
-- 📂 分类筛选
+### 前端功能
+- 🎨 现代化的 Vue.js 3 + Element Plus UI
 - 🎠 轮播图展示
-- 📊 图片统计信息（观看数、点赞数）
-- ⚡ 流畅的动画效果
+- 📱 响应式设计
+- 🔐 管理员登录系统
+- 📊 管理后台
 
-### 管理后台
-- 🔐 管理员登录验证
-- 📊 数据概览仪表板
-- 🖼️ 图片管理（增删改查）
-- 📂 分类管理
-- 📱 响应式管理界面
+### 后端功能
+- 🛡️ NestJS 框架 + TypeScript
+- 🗄️ TypeORM + MySQL/SQLite 数据库
+- 🔑 JWT 身份验证
+- 📁 文件上传功能
+- 🎯 RESTful API 设计
 
-## 技术栈
-
-- **前端框架**: Vue 3 (Composition API)
-- **构建工具**: Vite
-- **路由**: Vue Router 4
-- **状态管理**: Pinia
-- **UI组件库**: Element Plus
-- **HTTP客户端**: Axios
-- **样式**: CSS3 + Flexbox + Grid
-
-## 项目结构
+## 📁 项目结构
 
 ```
-bilibili/
-├── public/
-├── src/
-│   ├── components/          # 公共组件
-│   ├── views/              # 页面组件
-│   │   ├── Home.vue        # 首页
-│   │   ├── Admin.vue       # 管理后台
-│   │   └── AdminLogin.vue  # 管理员登录
-│   ├── router/             # 路由配置
-│   ├── stores/             # Pinia状态管理
-│   ├── App.vue             # 根组件
-│   ├── main.js             # 入口文件
-│   └── style.css           # 全局样式
-├── index.html
-├── package.json
-├── vite.config.js
+bilibili-demo/
+├── frontend/                 # Vue.js 前端
+│   ├── src/
+│   │   ├── views/           # 页面组件
+│   │   ├── api/             # API 接口
+│   │   ├── stores/          # 状态管理
+│   │   └── router/          # 路由配置
+│   └── package.json
+├── backend/bilibili-backend/ # NestJS 后端
+│   ├── src/
+│   │   ├── auth/            # 身份验证模块
+│   │   ├── banners/         # 轮播图模块
+│   │   ├── categories/      # 分类模块
+│   │   ├── images/          # 图片模块
+│   │   ├── entities/        # 数据库实体
+│   │   └── scripts/         # 初始化脚本
+│   ├── DATABASE_INIT_GUIDE.md
+│   ├── MYSQL_SETUP.md
+│   └── package.json
 └── README.md
 ```
 
-## 安装和运行
+## 🛠️ 技术栈
 
-### 1. 安装依赖
+### 前端
+- **Vue.js 3** - 渐进式 JavaScript 框架
+- **Element Plus** - Vue 3 UI 组件库
+- **Vite** - 快速构建工具
+- **Pinia** - 状态管理
+- **Vue Router** - 路由管理
+
+### 后端
+- **NestJS** - Node.js 企业级框架
+- **TypeScript** - 类型安全的 JavaScript
+- **TypeORM** - 对象关系映射
+- **MySQL/SQLite** - 数据库
+- **JWT** - JSON Web Token 认证
+- **Multer** - 文件上传中间件
+
+## 🚀 快速开始
+
+### 环境要求
+- Node.js 16+
+- MySQL 8.0+ (可选，也支持 SQLite)
+- npm 或 yarn
+
+### 1. 克隆项目
+```bash
+git clone <repository-url>
+cd bilibili-demo
+```
+
+### 2. 安装依赖
+
+**前端依赖：**
 ```bash
 npm install
 ```
 
-### 2. 启动开发服务器
+**后端依赖：**
 ```bash
+cd backend/bilibili-backend
+npm install
+```
+
+### 3. 数据库配置
+
+#### 使用 MySQL（推荐）
+1. 参考 `backend/bilibili-backend/MYSQL_SETUP.md` 安装 MySQL
+2. 创建数据库：
+   ```sql
+   CREATE DATABASE bilibili;
+   ```
+3. 配置环境变量（`backend/bilibili-backend/.env`）：
+   ```env
+   DB_HOST=localhost
+   DB_PORT=3306
+   DB_USERNAME=root
+   DB_PASSWORD=your_password
+   DB_DATABASE=bilibili
+   PORT=3000
+   JWT_SECRET=your_jwt_secret
+   ```
+
+#### 使用 SQLite（开发环境）
+无需额外配置，项目会自动创建 `database.sqlite` 文件。
+
+### 4. 初始化数据库
+```bash
+cd backend/bilibili-backend
+npm run init-db
+```
+
+### 5. 启动服务
+
+**启动后端：**
+```bash
+cd backend/bilibili-backend
+npm run start:dev
+```
+后端服务运行在 `http://localhost:3000`
+
+**启动前端：**
+```bash
+# 在项目根目录
 npm run dev
 ```
+前端服务运行在 `http://localhost:3001`
 
-### 3. 构建生产版本
+### 6. 访问应用
+- 前端页面：http://localhost:3001
+- 管理后台：http://localhost:3001/admin
+- 默认管理员账号：`admin` / `admin123`
+
+## 📚 API 文档
+
+### 主要接口
+- `GET /api/banners` - 获取轮播图列表
+- `POST /api/auth/login` - 用户登录
+- `GET /api/categories` - 获取分类列表
+- `POST /api/images/upload` - 图片上传
+
+## 🗄️ 数据库初始化
+
+项目提供了完整的数据库初始化方案：
+
 ```bash
-npm run build
+# 完整初始化（推荐）
+npm run init-db
+
+# 仅初始化轮播图
+npm run init-banners
+
+# 初始化种子数据
+npm run seed
 ```
 
-### 4. 预览生产版本
-```bash
-npm run preview
-```
+详细说明请参考：`backend/bilibili-backend/DATABASE_INIT_GUIDE.md`
 
-## 使用说明
-
-### 前端页面
-- 访问 `http://localhost:3000` 查看主页
-- 点击分类标签筛选不同类型的内容
-- 使用搜索框搜索内容
-- 点击图片卡片模拟播放功能
-
-### 管理后台
-- 访问 `http://localhost:3000/admin/login` 进入管理员登录页面
-- 默认账号：`admin`，密码：`123456`
-- 登录后可以管理图片和分类
-
-### 主要功能
-
-#### 数据概览
-- 显示总图片数、总观看数、总点赞数、分类数量等统计信息
-
-#### 图片管理
-- 查看所有图片列表
-- 添加新图片（标题、作者、分类、时长、缩略图）
-- 编辑现有图片信息
-- 删除图片
-
-#### 分类管理
-- 查看所有分类
-- 添加新分类
-- 删除分类
-
-## 特色功能
-
-1. **仿Bilibili设计**: 高度还原Bilibili的界面风格和交互体验
-2. **响应式设计**: 完美适配桌面端和移动端
-3. **现代化技术栈**: 使用最新的Vue3 Composition API和相关生态
-4. **完整的管理系统**: 包含完整的后台管理功能
-5. **优雅的动画**: 流畅的过渡动画和交互效果
-
-## 开发说明
+## 🔧 开发指南
 
 ### 添加新功能
-1. 在 `src/views/` 中添加新页面
-2. 在 `src/router/index.js` 中配置路由
-3. 在 `src/stores/` 中添加状态管理
+1. 后端：在 `src/` 目录下创建新模块
+2. 前端：在 `src/views/` 添加新页面组件
+3. 更新路由和 API 接口
 
-### 自定义样式
-- 全局样式在 `src/style.css`
-- 组件样式使用scoped CSS
-- 支持CSS变量和现代CSS特性
+### 数据库迁移
+```bash
+cd backend/bilibili-backend
+npm run migration:generate -- -n MigrationName
+npm run migration:run
+```
 
-## 浏览器支持
-
-- Chrome >= 87
-- Firefox >= 78
-- Safari >= 14
-- Edge >= 88
-
-## 许可证
+## 📝 许可证
 
 MIT License
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+## 📞 联系
+
+如有问题，请创建 Issue 或联系开发者。
