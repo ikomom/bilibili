@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { ElMessage } from 'element-plus'
 
 // 创建axios实例
 const api = axios.create({
@@ -29,10 +30,34 @@ api.interceptors.response.use(
     return response.data
   },
   error => {
+    // 处理401未授权错误
     if (error.response?.status === 401) {
       localStorage.removeItem('token')
       window.location.href = '/admin/login'
+      return Promise.reject(error)
     }
+
+    // 统一错误处理
+    if (error.response?.data?.message) {
+      const message = error.response.data.message
+      if (Array.isArray(message)) {
+        ElMessage.error(message.join(', '))
+      } else {
+        ElMessage.error(message)
+      }
+    } else if (error.message) {
+      // 网络错误或其他错误
+      if (error.message.includes('timeout')) {
+        ElMessage.error('请求超时，请重试')
+      } else if (error.message.includes('Network Error')) {
+        ElMessage.error('网络连接失败，请检查网络')
+      } else {
+        ElMessage.error('操作失败，请重试')
+      }
+    } else {
+      ElMessage.error('操作失败，请重试')
+    }
+
     return Promise.reject(error)
   }
 )
@@ -40,7 +65,12 @@ api.interceptors.response.use(
 // 认证API
 export const authAPI = {
   login: (credentials) => api.post('/auth/login', credentials),
-  register: (userData) => api.post('/auth/register', userData)
+  register: (userData) => api.post('/auth/register', userData),
+  getUsers: (params) => api.get('/auth/users', { params }),
+  getUser: (id) => api.get(`/auth/users/${id}`),
+  updateUser: (id, userData) => api.put(`/auth/users/${id}`, userData),
+  deleteUser: (id) => api.delete(`/auth/users/${id}`),
+  toggleUserStatus: (id) => api.put(`/auth/users/${id}/toggle-status`)
 }
 
 // 图片API

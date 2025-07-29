@@ -53,6 +53,11 @@
           <p>默认密码：admin123</p>
         </div>
         
+        <div class="register-link">
+          <span>还没有账号？</span>
+          <router-link to="/register" class="link">立即注册</router-link>
+        </div>
+        
         <div class="back-home">
           <router-link to="/">
             <el-button type="text">
@@ -186,6 +191,23 @@ const handleLogin = async () => {
   color: #666;
   font-size: 13px;
   margin: 2px 0;
+}
+
+.register-link {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #666;
+  font-size: 14px;
+}
+
+.register-link .link {
+  color: #409eff;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.register-link .link:hover {
+  text-decoration: underline;
 }
 
 .back-home {

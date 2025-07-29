@@ -3,6 +3,8 @@ import Home from '@/views/Home.vue'
 import Admin from '@/views/Admin.vue'
 import AdminLogin from '@/views/AdminLogin.vue'
 import VideoDetail from '@/views/VideoDetail.vue'
+import Register from '@/views/Register.vue'
+import UserManagement from '@/views/admin/UserManagement.vue'
 
 const routes = [
   {
@@ -24,10 +26,22 @@ const routes = [
     meta: { title: '管理员登录' }
   },
   {
+    path: '/register',
+    name: 'Register',
+    component: Register,
+    meta: { title: '用户注册' }
+  },
+  {
     path: '/admin',
     name: 'Admin',
     component: Admin,
     meta: { title: '管理后台', requiresAuth: true }
+  },
+  {
+    path: '/admin/users',
+    name: 'UserManagement',
+    component: UserManagement,
+    meta: { title: '用户管理', requiresAuth: true }
   }
 ]
 

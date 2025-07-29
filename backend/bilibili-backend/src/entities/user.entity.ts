@@ -17,8 +17,17 @@ export class User {
   @Column()
   password: string;
 
-  @Column({ default: 'admin' })
-  role: string;
+  @Column({ nullable: true })
+  email: string;
+
+  @Column({ nullable: true })
+  nickname: string;
+
+  @Column({ default: 'user' })
+  role: string; // 'admin', 'user'
+
+  @Column({ default: 'active' })
+  status: string; // 'active', 'inactive', 'banned'
 
   @CreateDateColumn()
   createdAt: Date;

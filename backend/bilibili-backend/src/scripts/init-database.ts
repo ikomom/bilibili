@@ -18,10 +18,16 @@ async function initDatabase() {
     // 1. 创建默认管理员用户
     console.log('👤 创建默认管理员用户...');
     try {
-      await authService.createUser('admin', 'admin123', 'admin');
+      await authService.register({
+        username: 'admin',
+        password: 'admin123',
+        email: 'admin@bilibili.com',
+        nickname: '系统管理员',
+        role: 'admin'
+      });
       console.log('✅ 默认管理员用户创建成功: admin/admin123');
     } catch (error) {
-      if (error.message.includes('already exists')) {
+      if (error.message.includes('用户名已存在')) {
         console.log('ℹ️  管理员用户已存在，跳过创建');
       } else {
         throw error;
