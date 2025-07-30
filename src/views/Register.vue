@@ -142,92 +142,207 @@ const handleRegister = async () => {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import '../style.less';
+
 .register-container {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  padding: 20px;
+  background: linear-gradient(135deg, @primary-color 0%, @secondary-color 100%);
+  padding: @spacing-xl;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+    pointer-events: none;
+  }
 }
 
 .register-card {
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
-  padding: 40px;
+  background: @white;
+  border-radius: @border-radius-xl;
+  box-shadow: @shadow-xl;
+  padding: @spacing-3xl;
   width: 100%;
-  max-width: 450px;
+  max-width: 480px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  position: relative;
+  z-index: 1;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.8) 100%);
+    border-radius: @border-radius-xl;
+    z-index: -1;
+  }
 }
 
 .register-header {
   text-align: center;
-  margin-bottom: 30px;
-}
-
-.register-header h2 {
-  color: #333;
-  margin-bottom: 8px;
-  font-size: 28px;
-  font-weight: 600;
-}
-
-.register-header p {
-  color: #666;
-  font-size: 14px;
-  margin: 0;
+  margin-bottom: @spacing-2xl;
+  
+  h2 {
+    color: @gray-800;
+    margin-bottom: @spacing-sm;
+    font-size: @font-size-2xl;
+    font-weight: 700;
+    background: linear-gradient(135deg, @primary-color 0%, @secondary-color 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  p {
+    color: @gray-600;
+    font-size: @font-size-base;
+    margin: 0;
+    font-weight: 400;
+  }
 }
 
 .register-form {
-  margin-top: 20px;
+  margin-top: @spacing-xl;
+  
+  .el-form-item {
+    margin-bottom: @spacing-xl;
+  }
 }
 
 .register-btn {
   width: 100%;
-  height: 45px;
-  font-size: 16px;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  height: 48px;
+  font-size: @font-size-lg;
+  font-weight: 600;
+  border-radius: @border-radius-lg;
+  background: linear-gradient(135deg, @primary-color 0%, @primary-dark 100%);
   border: none;
-}
-
-.register-btn:hover {
-  background: linear-gradient(135deg, #5a6fd8 0%, #6a4190 100%);
+  box-shadow: @shadow-md;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(135deg, @primary-dark 0%, darken(@primary-dark, 10%) 100%);
+    transform: translateY(-2px);
+    box-shadow: @shadow-lg;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
 }
 
 .login-link {
   text-align: center;
-  margin-top: 20px;
-  color: #666;
-  font-size: 14px;
+  margin-top: @spacing-xl;
+  color: @gray-600;
+  font-size: @font-size-sm;
+  
+  .link {
+    color: @primary-color;
+    text-decoration: none;
+    margin-left: @spacing-xs;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: @primary-dark;
+      text-decoration: underline;
+    }
+  }
 }
 
-.login-link .link {
-  color: #667eea;
-  text-decoration: none;
-  margin-left: 5px;
-}
-
-.login-link .link:hover {
-  text-decoration: underline;
-}
-
+// Element Plus 样式覆盖
 :deep(.el-form-item__label) {
-  color: #333;
+  color: @gray-700;
+  font-weight: 600;
+  font-size: @font-size-sm;
+}
+
+:deep(.el-input) {
+  .el-input__wrapper {
+    border-radius: @border-radius-lg;
+    box-shadow: 0 0 0 1px @gray-300;
+    transition: all 0.3s ease;
+    background: @white;
+    
+    &:hover {
+      box-shadow: 0 0 0 1px @gray-400;
+    }
+    
+    &.is-focus {
+      box-shadow: 0 0 0 2px fade(@primary-color, 30%);
+    }
+  }
+  
+  .el-input__inner {
+    font-size: @font-size-base;
+    color: @gray-800;
+    
+    &::placeholder {
+      color: @gray-500;
+    }
+  }
+  
+  .el-input__prefix-inner {
+    color: @gray-500;
+    
+    .el-icon {
+      font-size: @font-size-lg;
+    }
+  }
+}
+
+:deep(.el-form-item__error) {
+  color: @error-color;
+  font-size: @font-size-xs;
   font-weight: 500;
 }
 
-:deep(.el-input__wrapper) {
-  border-radius: 8px;
-  box-shadow: 0 0 0 1px #dcdfe6;
-}
-
-:deep(.el-input__wrapper:hover) {
-  box-shadow: 0 0 0 1px #c0c4cc;
-}
-
-:deep(.el-input__wrapper.is-focus) {
-  box-shadow: 0 0 0 1px #667eea;
+// 响应式设计
+@media (max-width: 768px) {
+  .register-container {
+    padding: @spacing-lg;
+  }
+  
+  .register-card {
+    padding: @spacing-xl;
+    max-width: 100%;
+    
+    .register-header {
+      margin-bottom: @spacing-xl;
+      
+      h2 {
+        font-size: @font-size-xl;
+      }
+      
+      p {
+        font-size: @font-size-sm;
+      }
+    }
+    
+    .register-form {
+      .el-form-item {
+        margin-bottom: @spacing-lg;
+      }
+    }
+    
+    .register-btn {
+      height: 44px;
+      font-size: @font-size-base;
+    }
+  }
 }
 </style>

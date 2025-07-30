@@ -64,6 +64,15 @@
             <div class="comment-section">
               <div class="comment-header">
                 <h3>评论 ({{ comments.length }})</h3>
+                <div class="demo-notice">
+                  <el-alert
+                    title="演示说明"
+                    description="以下评论为演示数据，非真实用户评论。在实际应用中，这里会显示真实的用户评论。"
+                    type="info"
+                    :closable="false"
+                    show-icon
+                  />
+                </div>
               </div>
               
               <!-- 发表评论 -->
@@ -272,28 +281,31 @@ const initData = async () => {
     .filter(img => img.id !== videoId)
     .slice(0, 10)
   
-  // 模拟评论数据
+  // 演示评论数据（注：这是演示数据，非真实用户评论）
   comments.value = [
     {
       id: 1,
-      author: '用户001',
-      content: '这个内容真不错！',
+      author: '演示用户001',
+      content: '这个内容真不错！（演示评论）',
       createdAt: new Date(Date.now() - 86400000).toISOString(),
-      likes: 5
+      likes: 5,
+      isDemo: true
     },
     {
       id: 2,
-      author: '用户002',
-      content: '很有创意，学到了很多',
+      author: '演示用户002',
+      content: '很有创意，学到了很多（演示评论）',
       createdAt: new Date(Date.now() - 172800000).toISOString(),
-      likes: 3
+      likes: 3,
+      isDemo: true
     },
     {
       id: 3,
-      author: '用户003',
-      content: '期待更多这样的内容',
+      author: '演示用户003',
+      content: '期待更多这样的内容（演示评论）',
       createdAt: new Date(Date.now() - 259200000).toISOString(),
-      likes: 8
+      likes: 8,
+      isDemo: true
     }
   ]
 }
@@ -304,82 +316,136 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import '../style.less';
+
 .video-detail {
   min-height: 100vh;
-  background-color: #f4f5f7;
+  background: linear-gradient(135deg, @gray-50 0%, @gray-100 100%);
 }
 
-/* 头部导航 */
+// 头部导航
 .header {
-  background: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background: @white;
+  box-shadow: @shadow-md;
   position: sticky;
   top: 0;
   z-index: 100;
-}
-
-.header .container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 64px;
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid @gray-200;
+  
+  .container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    padding: 0 @spacing-xl;
+  }
 }
 
 .nav-left {
   display: flex;
   align-items: center;
+  gap: @spacing-lg;
 }
 
 .back-btn {
-  margin-right: 20px;
-  font-size: 16px;
-  color: #666;
+  font-size: @font-size-base;
+  color: @gray-600;
+  transition: all 0.3s ease;
+  padding: @spacing-sm @spacing-md;
+  border-radius: @border-radius-md;
+  
+  &:hover {
+    color: @primary-color;
+    background: fade(@primary-color, 10%);
+    transform: translateX(-2px);
+  }
+  
+  .el-icon {
+    margin-right: @spacing-xs;
+  }
 }
 
-.back-btn:hover {
-  color: #00a1d6;
-}
-
-.logo h1 {
-  color: #00a1d6;
-  font-size: 24px;
-  font-weight: bold;
+.logo {
+  h1 {
+    color: @primary-color;
+    font-size: @font-size-xl;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(135deg, @primary-color 0%, @primary-dark 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
 }
 
 .admin-link {
   text-decoration: none;
+  
+  .el-button {
+    background: linear-gradient(135deg, @primary-color 0%, @primary-dark 100%);
+    border: none;
+    box-shadow: @shadow-sm;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: @shadow-md;
+    }
+  }
 }
 
-/* 主要内容 */
+// 主要内容
 .main-content {
-  padding: 20px 0;
+  padding: @spacing-xl 0;
+  
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 @spacing-xl;
+  }
 }
 
 .video-layout {
   display: grid;
-  grid-template-columns: 1fr 300px;
-  gap: 30px;
+  grid-template-columns: 1fr 320px;
+  gap: @spacing-2xl;
 }
 
-/* 视频区域 */
+// 视频区域
 .video-section {
-  background: #fff;
-  border-radius: 8px;
+  background: @white;
+  border-radius: @border-radius-xl;
   overflow: hidden;
+  box-shadow: @shadow-lg;
+  border: 1px solid @gray-200;
 }
 
 .video-player {
   position: relative;
   width: 100%;
-  height: 450px;
-  background: #000;
+  height: 480px;
+  background: @gray-900;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.3) 100%);
+    z-index: 1;
+  }
 }
 
 .video-image {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.3s ease;
 }
 
 .play-overlay {
@@ -387,257 +453,464 @@ onMounted(() => {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 80px;
-  height: 80px;
-  background: rgba(0, 0, 0, 0.7);
+  width: 88px;
+  height: 88px;
+  background: rgba(0, 0, 0, 0.8);
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: all 0.3s;
-}
-
-.play-overlay:hover {
-  background: rgba(0, 161, 214, 0.8);
-  transform: translate(-50%, -50%) scale(1.1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+  
+  &:hover {
+    background: fade(@primary-color, 90%);
+    transform: translate(-50%, -50%) scale(1.15);
+    border-color: rgba(255, 255, 255, 0.6);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    
+    ~ .video-image {
+      transform: scale(1.05);
+    }
+  }
 }
 
 .play-icon {
-  font-size: 32px;
-  color: white;
+  font-size: 36px;
+  color: @white;
   margin-left: 4px;
+  transition: transform 0.3s ease;
+  
+  .play-overlay:hover & {
+    transform: scale(1.1);
+  }
 }
 
-/* 视频信息 */
+// 视频信息
 .video-info {
-  padding: 20px;
+  padding: @spacing-xl;
 }
 
 .video-title {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 0 0 15px 0;
-  color: #333;
+  font-size: @font-size-2xl;
+  font-weight: 700;
+  margin: 0 0 @spacing-lg 0;
+  color: @gray-800;
+  line-height: 1.4;
 }
 
 .video-meta {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 15px;
-  padding-bottom: 15px;
-  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: @spacing-lg;
+  padding-bottom: @spacing-lg;
+  border-bottom: 1px solid @gray-200;
 }
 
 .meta-left {
   display: flex;
-  gap: 15px;
+  gap: @spacing-lg;
   align-items: center;
 }
 
 .author {
-  color: #00a1d6;
-  font-weight: 500;
+  color: @primary-color;
+  font-weight: 600;
+  font-size: @font-size-base;
+  transition: color 0.3s ease;
+  
+  &:hover {
+    color: @primary-dark;
+  }
 }
 
 .upload-time {
-  color: #999;
-  font-size: 14px;
+  color: @gray-500;
+  font-size: @font-size-sm;
+  font-weight: 400;
 }
 
 .stats {
   display: flex;
-  gap: 20px;
+  gap: @spacing-xl;
 }
 
 .views, .likes {
   display: flex;
   align-items: center;
-  gap: 5px;
-  color: #666;
+  gap: @spacing-xs;
+  color: @gray-600;
   cursor: pointer;
-  transition: all 0.3s;
-}
-
-.views:hover, .likes:hover {
-  color: #00a1d6;
+  transition: all 0.3s ease;
+  padding: @spacing-sm @spacing-md;
+  border-radius: @border-radius-md;
+  font-weight: 500;
+  
+  &:hover {
+    color: @primary-color;
+    background: fade(@primary-color, 10%);
+    transform: translateY(-1px);
+  }
+  
+  .el-icon {
+    font-size: @font-size-lg;
+  }
 }
 
 .video-description {
-  color: #666;
-  line-height: 1.6;
+  color: @gray-700;
+  line-height: 1.7;
+  font-size: @font-size-base;
+  
+  p {
+    margin: 0;
+  }
 }
 
-/* 评论区 */
+// 评论区
 .comment-section {
-  padding: 20px;
-  border-top: 1px solid #e5e5e5;
+  padding: @spacing-xl;
+  border-top: 1px solid @gray-200;
+  background: @gray-50;
+  
+  .comment-header {
+    margin-bottom: @spacing-xl;
+    
+    h3 {
+      margin: 0 0 @spacing-lg 0;
+      color: @gray-800;
+      font-size: @font-size-xl;
+      font-weight: 700;
+    }
+  }
 }
 
-.comment-header h3 {
-  margin: 0 0 20px 0;
-  color: #333;
+.demo-notice {
+  margin-bottom: @spacing-xl;
+  
+  .el-alert {
+    border-radius: @border-radius-lg;
+    border: 1px solid fade(@info-color, 30%);
+    background: fade(@info-color, 5%);
+  }
 }
 
 .comment-form {
-  margin-bottom: 30px;
-}
-
-.comment-input {
-  margin-bottom: 10px;
-}
-
-.comment-actions {
-  text-align: right;
+  margin-bottom: @spacing-2xl;
+  padding: @spacing-xl;
+  background: @white;
+  border-radius: @border-radius-lg;
+  box-shadow: @shadow-sm;
+  border: 1px solid @gray-200;
+  
+  .comment-input {
+    margin-bottom: @spacing-md;
+    
+    :deep(.el-textarea__inner) {
+      border-radius: @border-radius-md;
+      border: 1px solid @gray-300;
+      font-size: @font-size-base;
+      line-height: 1.6;
+      
+      &:focus {
+        border-color: @primary-color;
+        box-shadow: 0 0 0 2px fade(@primary-color, 20%);
+      }
+    }
+  }
+  
+  .comment-actions {
+    text-align: right;
+    
+    .el-button {
+      background: linear-gradient(135deg, @primary-color 0%, @primary-dark 100%);
+      border: none;
+      box-shadow: @shadow-sm;
+      transition: all 0.3s ease;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: @shadow-md;
+      }
+      
+      &:disabled {
+        background: @gray-300;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
 }
 
 .comment-list {
-  space-y: 20px;
-}
-
-.comment-item {
-  display: flex;
-  gap: 15px;
-  margin-bottom: 20px;
+  .comment-item {
+    display: flex;
+    gap: @spacing-md;
+    margin-bottom: @spacing-xl;
+    padding: @spacing-lg;
+    background: @white;
+    border-radius: @border-radius-lg;
+    box-shadow: @shadow-sm;
+    border: 1px solid @gray-200;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      box-shadow: @shadow-md;
+      transform: translateY(-2px);
+    }
+  }
 }
 
 .comment-content {
   flex: 1;
+  
+  .comment-author {
+    font-weight: 600;
+    color: @gray-800;
+    margin-bottom: @spacing-xs;
+    font-size: @font-size-base;
+  }
+  
+  .comment-text {
+    color: @gray-700;
+    line-height: 1.6;
+    margin-bottom: @spacing-sm;
+    font-size: @font-size-base;
+  }
+  
+  .comment-meta {
+    display: flex;
+    gap: @spacing-lg;
+    align-items: center;
+  }
+  
+  .comment-time {
+    color: @gray-500;
+    font-size: @font-size-xs;
+    font-weight: 400;
+  }
+  
+  .comment-like {
+    display: flex;
+    align-items: center;
+    gap: @spacing-xs;
+    color: @gray-500;
+    cursor: pointer;
+    font-size: @font-size-xs;
+    transition: all 0.3s ease;
+    padding: @spacing-xs @spacing-sm;
+    border-radius: @border-radius-sm;
+    
+    &:hover {
+      color: @primary-color;
+      background: fade(@primary-color, 10%);
+    }
+  }
 }
 
-.comment-author {
-  font-weight: 500;
-  color: #333;
-  margin-bottom: 5px;
-}
-
-.comment-text {
-  color: #666;
-  line-height: 1.5;
-  margin-bottom: 8px;
-}
-
-.comment-meta {
-  display: flex;
-  gap: 15px;
-  align-items: center;
-}
-
-.comment-time {
-  color: #999;
-  font-size: 12px;
-}
-
-.comment-like {
-  display: flex;
-  align-items: center;
-  gap: 3px;
-  color: #999;
-  cursor: pointer;
-  font-size: 12px;
-  transition: all 0.3s;
-}
-
-.comment-like:hover {
-  color: #00a1d6;
-}
-
-/* 推荐区域 */
+// 推荐区域
 .recommend-section {
-  background: #fff;
-  border-radius: 8px;
-  padding: 20px;
+  background: @white;
+  border-radius: @border-radius-xl;
+  padding: @spacing-xl;
   height: fit-content;
-}
-
-.recommend-section h3 {
-  margin: 0 0 20px 0;
-  color: #333;
+  box-shadow: @shadow-lg;
+  border: 1px solid @gray-200;
+  position: sticky;
+  top: 84px;
+  
+  h3 {
+    margin: 0 0 @spacing-xl 0;
+    color: @gray-800;
+    font-size: @font-size-lg;
+    font-weight: 700;
+    padding-bottom: @spacing-md;
+    border-bottom: 2px solid @gray-200;
+  }
 }
 
 .recommend-item {
   display: flex;
-  gap: 10px;
-  margin-bottom: 15px;
+  gap: @spacing-md;
+  margin-bottom: @spacing-lg;
   cursor: pointer;
-  padding: 8px;
-  border-radius: 6px;
-  transition: all 0.3s;
-}
-
-.recommend-item:hover {
-  background: #f5f5f5;
+  padding: @spacing-md;
+  border-radius: @border-radius-lg;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  
+  &:hover {
+    background: @gray-50;
+    border-color: @gray-200;
+    transform: translateY(-2px);
+    box-shadow: @shadow-sm;
+  }
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
 }
 
 .recommend-thumbnail {
-  width: 80px;
-  height: 60px;
-  border-radius: 4px;
+  width: 88px;
+  height: 66px;
+  border-radius: @border-radius-md;
   overflow: hidden;
   flex-shrink: 0;
-}
-
-.recommend-thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  position: relative;
+  
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+  
+  .recommend-item:hover & img {
+    transform: scale(1.05);
+  }
 }
 
 .recommend-info {
   flex: 1;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .recommend-title {
-  font-size: 14px;
-  font-weight: 500;
-  margin: 0 0 5px 0;
-  color: #333;
-  line-height: 1.3;
+  font-size: @font-size-sm;
+  font-weight: 600;
+  margin: 0 0 @spacing-xs 0;
+  color: @gray-800;
+  line-height: 1.4;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  transition: color 0.3s ease;
+  
+  .recommend-item:hover & {
+    color: @primary-color;
+  }
 }
 
 .recommend-meta {
   display: flex;
   flex-direction: column;
-  gap: 2px;
+  gap: @spacing-xs;
 }
 
 .recommend-author,
 .recommend-views {
-  font-size: 12px;
-  color: #999;
+  font-size: @font-size-xs;
+  color: @gray-500;
+  font-weight: 400;
 }
 
-/* 响应式设计 */
+// 响应式设计
 @media (max-width: 1024px) {
   .video-layout {
     grid-template-columns: 1fr;
-    gap: 20px;
+    gap: @spacing-xl;
   }
   
   .recommend-section {
     order: -1;
+    position: static;
+    
+    h3 {
+      font-size: @font-size-base;
+    }
+  }
+  
+  .recommend-item {
+    padding: @spacing-sm;
+    
+    .recommend-thumbnail {
+      width: 72px;
+      height: 54px;
+    }
+    
+    .recommend-title {
+      font-size: @font-size-xs;
+    }
   }
 }
 
 @media (max-width: 768px) {
+  .main-content {
+    padding: @spacing-lg 0;
+    
+    .container {
+      padding: 0 @spacing-md;
+    }
+  }
+  
   .video-player {
-    height: 250px;
+    height: 280px;
+  }
+  
+  .video-info {
+    padding: @spacing-lg;
   }
   
   .video-title {
-    font-size: 20px;
+    font-size: @font-size-xl;
+    margin-bottom: @spacing-md;
   }
   
   .video-meta {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: @spacing-md;
+    
+    .stats {
+      gap: @spacing-lg;
+    }
+  }
+  
+  .comment-section {
+    padding: @spacing-lg;
+    
+    .comment-form {
+      padding: @spacing-lg;
+    }
+    
+    .comment-item {
+      padding: @spacing-md;
+      gap: @spacing-sm;
+    }
+  }
+  
+  .recommend-section {
+    padding: @spacing-lg;
+    
+    .recommend-item {
+      .recommend-thumbnail {
+        width: 64px;
+        height: 48px;
+      }
+    }
+  }
+  
+  .header {
+    .container {
+      padding: 0 @spacing-md;
+    }
+    
+    .nav-left {
+      gap: @spacing-md;
+    }
+    
+    .logo h1 {
+      font-size: @font-size-lg;
+    }
   }
 }
 </style>

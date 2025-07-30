@@ -170,7 +170,7 @@
 import { ref, reactive, onMounted } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Plus } from '@element-plus/icons-vue'
-import { authAPI } from '@/api'
+import api, { authAPI } from '../../api'
 
 const loading = ref(false)
 const saving = ref(false)
@@ -356,49 +356,196 @@ onMounted(() => {
 })
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import '../../style.less';
+
 .user-management {
-  padding: 20px;
-}
-
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-.header h2 {
-  margin: 0;
-  color: #333;
-}
-
-.filters {
-  margin-bottom: 20px;
-  padding: 20px;
-  background: #f5f5f5;
-  border-radius: 8px;
-}
-
-.pagination {
-  margin-top: 20px;
-  text-align: right;
-}
-
-.dialog-footer {
-  display: flex;
-  justify-content: flex-end;
-  gap: 10px;
-}
-
-:deep(.el-table) {
-  border-radius: 8px;
-  overflow: hidden;
-}
-
-:deep(.el-table th) {
-  background-color: #f8f9fa;
-  color: #333;
-  font-weight: 600;
+  padding: @spacing-lg;
+  font-family: @font-family;
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: @spacing-lg;
+    
+    h2 {
+      margin: 0;
+      color: @text-color-primary;
+      font-size: @font-size-xl;
+      font-weight: @font-weight-bold;
+    }
+    
+    .el-button {
+      border-radius: @border-radius;
+      transition: all @transition-duration;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: @shadow-hover;
+      }
+    }
+  }
+  
+  .filters {
+    margin-bottom: @spacing-lg;
+    padding: @spacing-lg;
+    background: @bg-color-light;
+    border-radius: @border-radius;
+    border: 1px solid @border-color;
+    transition: all @transition-duration;
+    
+    &:hover {
+      box-shadow: @shadow-light;
+    }
+    
+    .el-input, .el-select {
+      .el-input__wrapper {
+        border-radius: @border-radius-sm;
+        transition: all @transition-duration;
+        
+        &:hover {
+          border-color: @primary-color;
+        }
+      }
+    }
+    
+    .el-button {
+      border-radius: @border-radius-sm;
+      transition: all @transition-duration;
+      
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+  }
+  
+  .pagination {
+    margin-top: @spacing-lg;
+    text-align: right;
+    
+    :deep(.el-pagination) {
+      .el-pager li {
+        border-radius: @border-radius-sm;
+        margin: 0 2px;
+        transition: all @transition-duration;
+        
+        &:hover {
+          transform: translateY(-1px);
+        }
+      }
+      
+      .btn-prev, .btn-next {
+        border-radius: @border-radius-sm;
+        transition: all @transition-duration;
+        
+        &:hover {
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+  
+  .dialog-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: @spacing-sm;
+    
+    .el-button {
+      border-radius: @border-radius;
+      transition: all @transition-duration;
+      
+      &:hover {
+        transform: translateY(-1px);
+        box-shadow: @shadow-hover;
+      }
+    }
+  }
+  
+  :deep(.el-table) {
+    border-radius: @border-radius;
+    overflow: hidden;
+    box-shadow: @shadow-light;
+    border: 1px solid @border-color;
+    
+    th {
+      background-color: @bg-color-light;
+      color: @text-color-primary;
+      font-weight: @font-weight-semibold;
+      font-family: @font-family;
+    }
+    
+    td {
+      font-family: @font-family;
+      color: @text-color-regular;
+    }
+    
+    .el-button {
+      border-radius: @border-radius-sm;
+      transition: all @transition-duration;
+      
+      &:hover {
+        transform: translateY(-1px);
+      }
+    }
+    
+    .el-tag {
+      border-radius: @border-radius-sm;
+      font-weight: @font-weight-medium;
+    }
+  }
+  
+  :deep(.el-dialog) {
+    border-radius: @border-radius;
+    
+    .el-dialog__header {
+      background: @bg-color-light;
+      border-bottom: 1px solid @border-color;
+      
+      .el-dialog__title {
+        font-weight: @font-weight-semibold;
+        color: @text-color-primary;
+      }
+    }
+    
+    .el-form-item {
+      .el-input__wrapper, .el-select .el-input__wrapper {
+        border-radius: @border-radius-sm;
+        transition: all @transition-duration;
+        
+        &:hover {
+          border-color: @primary-color;
+        }
+      }
+    }
+  }
+  
+  // 响应式设计
+  @media (max-width: 768px) {
+    padding: @spacing-md;
+    
+    .header {
+      flex-direction: column;
+      gap: @spacing-md;
+      
+      h2 {
+        font-size: @font-size-lg;
+      }
+    }
+    
+    .filters {
+      padding: @spacing-md;
+      
+      .el-row {
+        .el-col {
+          margin-bottom: @spacing-sm;
+        }
+      }
+    }
+    
+    .pagination {
+      text-align: center;
+    }
+  }
 }
 </style>

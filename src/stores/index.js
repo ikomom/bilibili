@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { ref, computed } from "vue";
-import { imageAPI, categoryAPI, authAPI, bannerAPI } from "@/api";
+import { imageAPI, categoryAPI, authAPI, bannerAPI } from "../api";
 
 // 图片数据store
 export const useImageStore = defineStore("image", () => {

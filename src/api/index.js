@@ -82,8 +82,8 @@ export const imageAPI = {
   }),
   updateImage: (id, data) => api.patch(`/images/${id}`, data),
   deleteImage: (id) => api.delete(`/images/${id}`),
-  incrementViews: (id) => api.post(`/images/${id}/views`),
-  incrementLikes: (id) => api.post(`/images/${id}/likes`),
+  incrementViews: (id) => api.post(`/images/${id}/view`),
+  incrementLikes: (id) => api.post(`/images/${id}/like`),
   getStats: () => api.get('/images/stats')
 }
 

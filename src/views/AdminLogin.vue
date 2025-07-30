@@ -125,112 +125,246 @@ const handleLogin = async () => {
 }
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+@import '../style.less';
+
 .admin-login {
   min-height: 100vh;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, @primary-color 0%, @secondary-color 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 20px;
+  padding: @spacing-xl;
+  position: relative;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1.5" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>') repeat;
+    pointer-events: none;
+  }
 }
 
 .login-container {
   width: 100%;
-  max-width: 400px;
+  max-width: 420px;
+  position: relative;
+  z-index: 1;
 }
 
 .login-card {
-  background: #fff;
-  border-radius: 12px;
-  padding: 40px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+  background: @white;
+  border-radius: @border-radius-xl;
+  padding: @spacing-3xl;
+  box-shadow: @shadow-2xl;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.85) 100%);
+    border-radius: @border-radius-xl;
+    z-index: -1;
+  }
 }
 
 .login-header {
   text-align: center;
-  margin-bottom: 30px;
-}
-
-.login-header h2 {
-  color: #333;
-  font-size: 24px;
-  font-weight: 600;
-  margin-bottom: 8px;
-}
-
-.login-header p {
-  color: #666;
-  font-size: 14px;
+  margin-bottom: @spacing-2xl;
+  
+  h2 {
+    color: @gray-800;
+    font-size: @font-size-2xl;
+    font-weight: 700;
+    margin-bottom: @spacing-sm;
+    background: linear-gradient(135deg, @primary-color 0%, @secondary-color 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  p {
+    color: @gray-600;
+    font-size: @font-size-base;
+    margin: 0;
+    font-weight: 400;
+  }
 }
 
 .login-form {
-  margin-bottom: 20px;
-}
-
-.login-form .el-form-item {
-  margin-bottom: 20px;
+  margin-bottom: @spacing-xl;
+  
+  .el-form-item {
+    margin-bottom: @spacing-xl;
+    
+    :deep(.el-form-item__label) {
+      color: @gray-700;
+      font-weight: 600;
+      font-size: @font-size-sm;
+    }
+    
+    :deep(.el-input) {
+      .el-input__wrapper {
+        border-radius: @border-radius-lg;
+        box-shadow: 0 0 0 1px @gray-300;
+        transition: all 0.3s ease;
+        background: @white;
+        
+        &:hover {
+          box-shadow: 0 0 0 1px @gray-400;
+        }
+        
+        &.is-focus {
+          box-shadow: 0 0 0 2px fade(@primary-color, 30%);
+        }
+      }
+      
+      .el-input__inner {
+        font-size: @font-size-base;
+        color: @gray-800;
+        
+        &::placeholder {
+          color: @gray-500;
+        }
+      }
+      
+      .el-input__prefix-inner {
+        color: @gray-500;
+        
+        .el-icon {
+          font-size: @font-size-lg;
+        }
+      }
+    }
+  }
 }
 
 .login-btn {
   width: 100%;
-  height: 44px;
-  font-size: 16px;
-  font-weight: 500;
+  height: 48px;
+  font-size: @font-size-lg;
+  font-weight: 600;
+  background: linear-gradient(135deg, @primary-color 0%, @primary-dark 100%);
+  border: none;
+  border-radius: @border-radius-lg;
+  box-shadow: @shadow-md;
+  transition: all 0.3s ease;
+  
+  &:hover {
+    background: linear-gradient(135deg, @primary-dark 0%, darken(@primary-dark, 10%) 100%);
+    transform: translateY(-2px);
+    box-shadow: @shadow-lg;
+  }
+  
+  &:active {
+    transform: translateY(0);
+  }
+  
+  &.is-loading {
+    transform: none;
+  }
 }
 
 .login-tips {
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 15px;
-  margin-bottom: 20px;
+  background: linear-gradient(135deg, @gray-50 0%, @gray-100 100%);
+  border-radius: @border-radius-lg;
+  padding: @spacing-lg;
+  margin-bottom: @spacing-xl;
   text-align: center;
-}
-
-.login-tips p {
-  color: #666;
-  font-size: 13px;
-  margin: 2px 0;
+  border: 1px solid @gray-200;
+  
+  p {
+    color: @gray-600;
+    font-size: @font-size-sm;
+    margin: @spacing-xs 0;
+    font-weight: 500;
+    
+    &:first-child {
+      margin-top: 0;
+    }
+    
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .register-link {
   text-align: center;
-  margin-bottom: 20px;
-  color: #666;
-  font-size: 14px;
-}
-
-.register-link .link {
-  color: #409eff;
-  text-decoration: none;
-  margin-left: 5px;
-}
-
-.register-link .link:hover {
-  text-decoration: underline;
+  margin-bottom: @spacing-xl;
+  color: @gray-600;
+  font-size: @font-size-sm;
+  
+  .link {
+    color: @primary-color;
+    text-decoration: none;
+    margin-left: @spacing-xs;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: @primary-dark;
+      text-decoration: underline;
+    }
+  }
 }
 
 .back-home {
   text-align: center;
+  
+  .el-button {
+    color: @gray-600;
+    font-size: @font-size-sm;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    
+    &:hover {
+      color: @primary-color;
+      background: fade(@primary-color, 10%);
+    }
+  }
 }
 
-.back-home .el-button {
-  color: #666;
-  font-size: 14px;
-}
-
-.back-home .el-button:hover {
-  color: #409eff;
-}
-
-/* 响应式设计 */
+// 响应式设计
 @media (max-width: 480px) {
-  .login-card {
-    padding: 30px 20px;
+  .admin-login {
+    padding: @spacing-lg;
   }
   
-  .login-header h2 {
-    font-size: 20px;
+  .login-card {
+    padding: @spacing-xl;
+    
+    .login-header {
+      margin-bottom: @spacing-xl;
+      
+      h2 {
+        font-size: @font-size-xl;
+      }
+      
+      p {
+        font-size: @font-size-sm;
+      }
+    }
+    
+    .login-form {
+      .el-form-item {
+        margin-bottom: @spacing-lg;
+      }
+    }
+    
+    .login-btn {
+      height: 44px;
+      font-size: @font-size-base;
+    }
   }
 }
 </style>
